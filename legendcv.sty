@@ -72,25 +72,26 @@
             \textcolor{iconcolor}{#1} \hspace{0.5em} % Icon + space
             \href{#2}{\texttt{#3}} % Link
         }
-        \hspace{1.5em} % Space between contacts
     }
 }
 
 % Print header with optional photo on the left
 \newcommand{\printheader}{%
-  \noindent\hspace{1.5em}
+  \noindent
+    % \hspace{1.5em}
     \ifx\cvphoto\empty
         % No image, use minipage for name and title with indentation
         \begin{minipage}[t]{\textwidth}
-            % \hspace{1.5em} % Indent the text by 2em
-            \textbf{\LARGE\sffamily \cvname}\\[-0.2em] % Indented name
+            % \hspace{-1.5em}\textbf{\LARGE\sffamily \cvname}\\
+            \textbf{\LARGE\sffamily \cvname}\\
             \ifx\cvtitle\empty\else\hspace{2em} {\large\cvtitle}\vspace{0.5em}\fi
         \end{minipage}
 
         % Contact block
         \small
         \renewcommand{\baselinestretch}{1.2}
-		% \hspace{-1em}
+        % \hspace{-1.5em}
+        \noindent
         \parbox{\textwidth}{\raggedright \contactlist}
     \else
         % Image present, use two-column layout with fixed image size
@@ -128,8 +129,8 @@
 
 % Custom CV Entry command
 \newcommand{\cventry}[5][]{%
-  \noindent
-  \hspace{2em} % Small indentation
+  % \noindent
+  % \hspace{2em} % Small indentation
   \makebox[1.5em][l]{\color{faiconcolor} \faIcon{#2}} % Align icons properly
   \textbf{#3} \hfill \textbf{\texttt{#4 -- #5}}
  % Title and dates aligned
@@ -162,10 +163,12 @@
 
 % Custom Skill Entry
 \newcommand{\cvskill}[3]{%
-    \par\noindent
-    \makebox[4.1em][r]{\color{faiconcolor} \scalebox{0.8}{\faIcon{#2}} \hspace{0.25em}} % Scaled-down icon
-    {\footnotesize \textbf{\color{faiconcolor} #1}} % Smaller heading
-    {\footnotesize \color{black}: #3} % Smaller description
+    % \par
+    \noindent
+    \hspace{2em} % Small indentation
+    \makebox[1.5em][r]{\color{faiconcolor} \scalebox{0.8}{\faIcon{#2}} \hspace{0.25em}} % Scaled-down icon
+    { \textbf{\color{faiconcolor} #1}} % Smaller heading
+    { \color{black}: #3} % Smaller description
     \par\vspace{0.25em} % Adds spacing between entries
 }
 
@@ -214,7 +217,18 @@
   \noindent
   \hspace{2em} % Small indentation
   \makebox[8em][l]{\textbf{\texttt{#1}}} % Fixed-width box for the date
-  \makebox[2.5em][l]{\color{faiconcolor} \faIcon{#2}} % Fixed-width box for the icon
+  \makebox[1.5em][l]{\color{faiconcolor} \faIcon{#2}} % Fixed-width box for the icon
+  \begin{minipage}[t]{\dimexpr\linewidth-12.5em} % Ensure text wraps properly
+    #3 % Description text
+  \end{minipage}
+  \par\vspace{0.5em} % Space between entries
+}
+%workshop
+\newcommand{\cvonelineentryws}[3][]{%
+  \noindent
+  \hspace{2em} % Small indentation
+  \makebox[10em][l]{\textbf{\texttt{#1}}} % Fixed-width box for the date
+  \makebox[1.5em][l]{\color{faiconcolor} \faIcon{#2}} % Fixed-width box for the icon
   \begin{minipage}[t]{\dimexpr\linewidth-12.5em} % Ensure text wraps properly
     #3 % Description text
   \end{minipage}
@@ -258,7 +272,7 @@
 \newcounter{bibitem}
 \AtBeginBibliography{\setcounter{bibitem}{1}}
 
-\DeclareFieldFormat{labelnumberwidth}{\hspace{1.5em}\makebox[2.0em][l]{\circled{\thebibitem}}}
+\DeclareFieldFormat{labelnumberwidth}{\hspace{1.5em}\makebox[2.5em][l]{\circled{\thebibitem}}}
 \setlength{\biblabelsep}{0pt}
 \AtEveryBibitem{\stepcounter{bibitem}}
 
