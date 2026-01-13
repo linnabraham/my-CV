@@ -1,0 +1,59 @@
+\documentclass[a4paper,11pt,english]{article}
+\usepackage{legendcv}
+\usepackage{tabularx}
+\addbibresource{publications.bib}  
+
+\pagestyle{empty}
+% Change the fonts if you want
+\ifxetexorluatex % If you're using XeLaTeX or LuaLaTeX
+  \usepackage{fontspec} 
+  %% You can use \setmainfont etc; I'm just using these font packages here because they provide OpenType fonts for use by XeLaTeX/LuaLaTeX anyway
+  \usepackage[p,osf,swashQ]{cochineal}
+  \usepackage[medium,bold]{cabin}
+  \usepackage[varqu,varl,scale=0.9]{zi4}
+\else % If you're using pdfLaTeX or latex
+  \usepackage[T1]{fontenc}
+  \usepackage[p,osf,swashQ]{cochineal}
+  \usepackage{cabin}
+  \usepackage[varqu,varl,scale=0.9]{zi4}
+\fi
+
+%set geometry for yourself
+\geometry{left=1.5cm,right=1.5cm,top=1cm,bottom=1cm}
+
+
+\mynames{Gopalakrishnan/Rahul}
+
+% Set icon color (optional)
+\seticoncolor[HTML]{007d00} % Dodger Blue
+
+% Define name & job title
+% \cvheader[Astrophysicist]{Rahul Gopalakrishnan}{photo.png}
+% \cvheader[Software Engineer]{Rahul Gopalakrishnan}{}
+\cvheader[]{Rahul Gopalakrishnan}{}
+
+% Define contact details
+\cvcontact{\faEnvelope[regular]}{mailto:rahulg.astro@gmail.com}{rahulg.astro@gmail.com}
+\cvcontact{\faLinkedin}{https://linkedin.com/in/akarahulg}{akarahulg}
+\cvcontact{\faGithub}{https://github.com/akarahulg}{akarahulg}
+\cvcontact{\faOrcid}{https://orcid.org/0000-0002-1282-3480}{0000-0002-1282-3480}
+% \cvcontact{\faGlobe}{http://thisisrahulg.xyz/}{thisisrahulg.xyz}
+\cvcontact{\faMapMarker}{https://www.iucaa.in/en/}{Inter-University Centre for Astronomy and Astrophysics, Post Bag 4, Ganeshkhind, Pune, Maharashtra 411007}
+
+\begin{document}
+
+\printheader
+
+\input{experience}
+\input{research}
+\input{publications}
+\input{workshops}
+\input{education}
+\input{skills}
+\newpage
+\input{miscellaneous}
+
+\input{references}
+
+\end{document}
+

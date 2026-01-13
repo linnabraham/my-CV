@@ -1,0 +1,333 @@
+\ProvidesPackage{customcv}
+
+\RequirePackage{fontawesome5} % Icons
+\RequirePackage{enumitem} % List styling
+\RequirePackage{xcolor} % Colors
+\RequirePackage{geometry} % Page layout
+\RequirePackage{titlesec} % Section spacing
+\RequirePackage{graphicx}
+\RequirePackage{tikz} % Graphics
+\RequirePackage{hyperref}
+\RequirePackage{titlesec} 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Define geometry
+\geometry{left=1in, right=1in, top=0.5in, bottom=0.5in}
+
+% Define custom color
+\definecolor{faiconcolor}{HTML}{A5158C}
+\definecolor{SwishLineColour}{HTML}{9fa0c3} % Light Purple
+\definecolor{doicolor}{HTML}{932F67} % Dark blue for DOI
+
+% Change font family globally to sans-serif
+\renewcommand{\familydefault}{\rmdefault}
+
+% Set line spacing and font size
+\renewcommand{\baselinestretch}{1} % Line spacing (1.2 for a bit more space between lines)
+\fontsize{12}{14}\selectfont % First is font size, second is font height
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\RequirePackage{silence}
+\WarningsOff[longtable]
+\WarningsOff[array]
+
+\usepackage{ifxetex,ifluatex,ragged2e}
+\newif\ifxetexorluatex
+\ifxetex
+  \xetexorluatextrue
+\else
+  \ifluatex
+    \xetexorluatextrue
+  \else
+    \xetexorluatexfalse
+  \fi
+\fi
+
+% Define icon color
+\definecolor{iconcolor}{HTML}{000000} % Default black
+\newcommand{\seticoncolor}[2][]{%
+    \ifx#1\empty
+        \colorlet{iconcolor}{#2} % Named color
+    \else
+        \definecolor{iconcolor}{HTML}{#2} % Hex color
+    \fi
+}
+
+% Command to set name, job title, and optional photo
+\newcommand{\cvheader}[3][]{%
+    \def\cvname{#2}
+    \def\cvtitle{#1}
+    \def\cvphoto{#3}
+}
+
+% Initialize contacts list
+\newcommand{\cvcontact}[3]{%
+    \expandafter\gdef\expandafter\contactlist\expandafter{%
+        \contactlist
+        \mbox{ % Ensures icon + text stay together
+            \textcolor{iconcolor}{#1} \hspace{0.5em} % Icon + space
+            \href{#2}{\texttt{#3}} % Link
+        }
+        \hspace{1.5em} % Space between contacts
+    }
+}
+
+% Print header with optional photo on the left
+\newcommand{\printheader}{%
+  \noindent\hspace{1.5em}
+    \ifx\cvphoto\empty
+        % No image, use minipage for name and title with indentation
+        \begin{minipage}[t]{\textwidth}
+            % \hspace{1.5em} % Indent the text by 2em
+            \textbf{\LARGE\sffamily \cvname}\\[-0.2em] % Indented name
+            \ifx\cvtitle\empty\else\hspace{2em} {\large\cvtitle}\vspace{0.5em}\fi
+        \end{minipage}
+
+        % Contact block
+        \small
+        \renewcommand{\baselinestretch}{1.2}
+		% \hspace{-1em}
+        \parbox{\textwidth}{\raggedright \contactlist}
+    \else
+        % Image present, use two-column layout with fixed image size
+        \begin{minipage}[b]{0.3\textwidth} % Image width
+            \raggedleft
+            % Include actual image provided by user
+            \includegraphics[height=4cm]{\cvphoto} % The user-specified image
+        \end{minipage}%
+        \hspace{0.5em} % Space between image and text
+        \begin{minipage}[b]{0.65\textwidth} % Align text to the bottom of the image
+            \vspace{\fill} % Fill the vertical space to push content down
+            \textbf{\LARGE\sffamily \cvname}%
+            \ifx\cvtitle\empty\else\\[-0.2em] {\large\cvtitle}\fi
+            \vspace{0.5em}
+
+            % Contact block
+            \small
+            \renewcommand{\baselinestretch}{1.2}
+            \parbox{\textwidth}{\raggedright \contactlist}
+
+            % Add vspace to adjust bottom alignment with image
+            \vspace{0.2em}  % Adjust this space as needed to align properly
+        \end{minipage}
+    \fi
+    \vspace{1em} % Reduced space between header and contacts
+}
+
+% Initialize contact list
+\gdef\contactlist{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\newcommand{\makefield}[2]{\makebox[1.5em]{\color{faiconcolor} #1} #2\hspace{2em}}
+
+% Custom CV Entry command
+\newcommand{\cventry}[5][]{%
+  \noindent
+  \hspace{2em} % Small indentation
+  \makebox[1.5em][l]{\color{faiconcolor} \faIcon{#2}} % Align icons properly
+  \textbf{#3} \hfill \textbf{\texttt{#4 -- #5}}
+ % Title and dates aligned
+  \parindent=4.2em\par % Indent for description alignment
+  \ifx#1\empty\else
+    \vspace{0.1em} % Increased space before the one-liner
+    {\texttt{#1}}\par % Optional one-liner below
+  \fi
+  \vspace{0.5em} % Adds space between entries
+}
+
+
+% Custom Education Entry
+\newcommand{\cvbigentry}[6][]{%
+  \noindent
+  \hspace{2em} % Small indentation
+  \makebox[1.5em][l]{\color{faiconcolor} \faIcon{#2}} % Icon
+  \textbf{#3} \hfill \textbf{\texttt{#4 -- #5}} % Degree and years
+  \parindent=4.1em\par % Align descriptions
+  \ifx#1\empty\else
+    \vspace{0.1em} % Space before optional topic
+    {\texttt{#1}}\par % Topic
+  \fi
+  \ifx#6\empty\else
+    \vspace{0.1em} % Space before optional field
+    {\texttt{#6}}\par % User-defined field (e.g., GPA, Honors, etc.)
+  \fi
+  \vspace{0.5em} % Space between entries
+}
+
+% Custom Skill Entry
+\newcommand{\cvskill}[3]{%
+    \par\noindent
+    \makebox[4.1em][r]{\color{faiconcolor} \scalebox{0.8}{\faIcon{#2}} \hspace{0.25em}} % Scaled-down icon
+    {\footnotesize \textbf{\color{faiconcolor} #1}} % Smaller heading
+    {\footnotesize \color{black}: #3} % Smaller description
+    \par\vspace{0.25em} % Adds spacing between entries
+}
+
+% Description block
+\newcommand{\cvdescitem}[1]{%
+  \par\noindent
+  \makebox[3.8em][r]{\color{faiconcolor} \faAngleRight} % Bullet icon
+  \hangindent=4.2em
+  \hangafter=1
+  #1\par
+}
+
+\newcommand{\cvdescpara}[1]{%
+  \par\hangindent=4.2em\hangafter=0 \noindent #1\par
+}
+
+% Space between entries
+\newcommand{\cvspacer}{\vspace{0.5em}} 
+
+% Section header with gradient background
+%
+
+\newcommand{\cvsection}[1]{%
+  \noindent
+  \begin{tikzpicture}[baseline]
+    \shade[rounded corners=10pt, left color=SwishLineColour!80!white, right color=white] 
+      rectangle (\linewidth/1.75, 20pt);
+    \node[font=\bfseries\large, inner sep=0pt, text ragged, anchor=south west, 
+          text depth=.5ex, text height=1.5ex] 
+          at (5pt, 3pt) {#1};
+  \end{tikzpicture}%
+  \par\vspace{5pt}
+}
+
+% Custom Subheading Command (Indented)
+\newcommand{\cvsubsection}[1]{%
+  \vspace{0.5em} % Space before subheading
+  \noindent
+  \hspace{2em} % Small indentation
+  \makebox[8em][l]{\textbf{#1}} % Make the subsection title align with the date
+  \par\vspace{0.5em} % Space after subheading
+}
+
+% Custom One-Line Entry (Indented + Proper Wrapping)
+\newcommand{\cvonelineentry}[3][]{%
+  \noindent
+  \hspace{2em} % Small indentation
+  \makebox[8em][l]{\textbf{\texttt{#1}}} % Fixed-width box for the date
+  \makebox[2.5em][l]{\color{faiconcolor} \faIcon{#2}} % Fixed-width box for the icon
+  \begin{minipage}[t]{\dimexpr\linewidth-12.5em} % Ensure text wraps properly
+    #3 % Description text
+  \end{minipage}
+  \par\vspace{0.5em} % Space between entries
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Load biblatex with proper options
+\PassOptionsToPackage{backend=biber,sorting=ydnt,uniquename=init,defernumbers=true,minnames=3}{biblatex}
+\RequirePackage[style=numeric, maxnames=3, minnames=3]{biblatex} 
+\RequirePackage{csquotes}
+\RequirePackage{tikz}
+\RequirePackage{xcolor}
+\RequirePackage{fontawesome5}
+\RequirePackage{hyperref}
+\RequirePackage{pgffor}
+\RequirePackage{etoolbox} % For \ifboolexpr
+
+% Define colors
+
+% Hyperref setup
+\hypersetup{
+  colorlinks=true,
+  urlcolor=black,    % Regular URLs in black
+  citecolor=doicolor, % Citations in dark blue
+  linkcolor=doicolor, % Internal links in dark blue
+}
+
+\AtBeginBibliography{
+    \setlength{\bibhang}{2em}  % Hanging indentation for each entry
+    \setlength{\leftmargini}{2em} % Indentation for each line in the entry
+    \setlength{\biblabelsep}{1em}  % Space between numbering and entry
+    \setlength{\bibitemsep}{1ex} % Space between bibliography entries
+    \renewcommand{\bibfont}{\fontsize{8}{8}\selectfont} % Set font size to 8pt
+}
+
+% Custom circled numbering for bibliography items
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+   \node[shape=circle,text=white,fill=faiconcolor!80!black,font=\sffamily\scriptsize\bfseries,inner sep=1pt,text height=1.35ex,minimum width=1.2em,text centered] (char) {#1};}}
+
+\newcounter{bibitem}
+\AtBeginBibliography{\setcounter{bibitem}{1}}
+
+\DeclareFieldFormat{labelnumberwidth}{\hspace{1.5em}\makebox[2.0em][l]{\circled{\thebibitem}}}
+\setlength{\biblabelsep}{0pt}
+\AtEveryBibitem{\stepcounter{bibitem}}
+
+% Ensure urldate is removed completely
+\AtEveryBibitem{
+  \clearfield{urldate}  % Remove "Visited on" field globally
+  \clearlist{urldate}   % Extra precaution: clear lists too
+  \iffieldundef{doi}{}{
+    \clearfield{url}     % Remove URL if DOI exists
+    \clearfield{eprint}  % Remove eprint if DOI exists
+  }
+}
+
+% Force urldate removal for online and misc entry types
+\AtEveryBibitem{
+  \ifentrytype{online}{
+    \clearfield{urldate}
+    \clearlist{urldate}
+  }{}
+  \ifentrytype{misc}{
+    \clearfield{urldate}
+    \clearlist{urldate}
+  }{}
+}
+
+\DeclareFieldFormat{doi}{%
+  \href{https://doi.org/\thefield{doi}}%
+  {\textcolor{doicolor}{\faLink\ \thefield{doi}}}%
+}
+
+\DeclareFieldFormat{url}{%
+  \href{\thefield{url}}%
+  {\textcolor{doicolor}{\faLink\ \thefield{url}}}%
+}
+
+% Regular URLs in black
+% \DeclareFieldFormat{url}{\href{\thefield{url}}{\textcolor{black}{\thefield{url}}}}
+
+% Name highlighting
+\newcommand{\mynames}[1]{\def\my@namelist{#1}}
+\newtoggle{boldname}
+
+\renewcommand*{\mkbibnamefamily}[1]{%
+  \global\togglefalse{boldname}%
+  \ifdefined\my@namelist % Check if \my@namelist is defined
+    \foreach \my@fname / \my@gname in \my@namelist {%
+      \ifboolexpr{ test {\ifdefstrequal{\namepartfamily}{\my@fname}}
+                   and
+                   test {\ifdefstrequal{\namepartgiven}{\my@gname}}}
+        {\global\toggletrue{boldname}}{}%
+    }%
+  \fi
+  \iftoggle{boldname}{\textbf{#1}}{#1}%
+}
+
+\renewcommand*{\mkbibnamegiven}[1]{%
+  \global\togglefalse{boldname}%
+  \ifdefined\my@namelist % Check if \my@namelist is defined
+    \foreach \my@fname / \my@gname in \my@namelist {%
+      \ifboolexpr{ test {\ifdefstrequal{\namepartfamily}{\my@fname}}
+                   and
+                   test {\ifdefstrequal{\namepartgiven}{\my@gname}}}
+        {\global\toggletrue{boldname}\breakforeach}{}%
+    }%
+  \fi
+  \iftoggle{boldname}{\textbf{#1}}{#1}%
+}
+
+\endinput
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
